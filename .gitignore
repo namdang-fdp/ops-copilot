@@ -68,3 +68,5 @@ AGENTS.md
 .ai-devkit.json
 docs/
 .agent/
+dump.rdb
+*.rdb
