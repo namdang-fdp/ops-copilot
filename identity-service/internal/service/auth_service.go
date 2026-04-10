@@ -56,6 +56,7 @@ func Login(username, password string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	token.Header["kid"] = "seal-key-1"
 	tokenString, err := token.SignedString([]byte(config.Cfg.JWTSecret))
 	if err != nil {
 		return "", response.NewAppError(http.StatusInternalServerError, "Không thể tạo token")
