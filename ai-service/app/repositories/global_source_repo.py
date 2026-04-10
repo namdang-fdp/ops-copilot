@@ -8,13 +8,19 @@ class GlobalSourceRepository:
         return db.query(GlobalSource).order_by(GlobalSource.created_at.desc()).all()
 
     def create(
-        self, db: Session, tech_name: str, source_url: str, user_id: str
+        self,
+        db: Session,
+        tech_name: str,
+        source_url: str,
+        user_id: str,
+        source_type: str = "FILE",
     ) -> GlobalSource:
         new_source = GlobalSource(
             tech_name=tech_name,
             source_url=source_url,
             status="PENDING",
             created_by=user_id,
+            source_type=source_type,
         )
         db.add(new_source)
         db.commit()
@@ -32,3 +38,6 @@ class GlobalSourceRepository:
             db.commit()
             db.refresh(source)
         return source
+
+    def get_all(self, db: Session):
+        return db.query(GlobalSource).order_by(GlobalSource.created_at.desc()).all()

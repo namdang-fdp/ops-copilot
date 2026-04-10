@@ -67,3 +67,5 @@ class GlobalSourceService:
 
         return new_source
 
+    def get_all_sources(self, db: Session):
+        return self.repo.get_all(db)

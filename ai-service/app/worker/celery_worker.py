@@ -1,5 +1,6 @@
 # app/worker/celery_worker.py
 import os
+import boto3
 import sys
 from celery import Celery
 from dotenv import load_dotenv
@@ -12,6 +13,15 @@ sys.path.append(
 )
 from app.config.database import SessionLocal
 from app.entities.global_source import GlobalSource
+
+s3_client = boto3.client(
+    "s3",
+    aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    region_name=os.getenv("AWS_REGION", "ap-southeast-1"),
+)
+
+bucket_name = os.getenv("AWS_BUCKET_NAME", "seal-copilot-data")
 
 load_dotenv()
 

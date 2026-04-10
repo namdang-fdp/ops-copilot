@@ -43,3 +43,8 @@ def contribute_link(
     """API nạp sitemap link (Worker sẽ tự động cào và ném lên S3)"""
     return service.contribute_link(db, req, x_user_id)
 
+
+@router.get("/sources", status_code=200)
+def get_sources(db: Session = Depends(get_db)):
+    """API lấy danh sách data đã nạp để Frontend hiển thị Dashboard"""
+    return service.get_all_sources(db)
