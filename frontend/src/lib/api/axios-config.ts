@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from 'axios';
 import { getApiUrl } from './api-url';
-import { useAuthStore } from '../stores/authStore';
+import { useAuthStore } from '../stores/auth-store';
 
 const apiUrl = getApiUrl();
 
