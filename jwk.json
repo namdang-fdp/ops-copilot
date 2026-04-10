@@ -3,7 +3,8 @@
     {
       "kty": "oct",
       "alg": "HS256",
-      "k": "c2VhbC1oYWNrYXRob24tc3VwZXItc2VjcmV0LWtleQ"
+      "kid": "seal-key-1",
+      "k": "c2VhbC1oYWNrYXRob24tc3VwZXItc2VjcmV0LWtleQ=="
     }
   ]
 }

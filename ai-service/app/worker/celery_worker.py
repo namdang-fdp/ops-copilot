@@ -7,20 +7,20 @@ from sqlalchemy.orm import Session
 import hashlib
 from rag_core.loaders.sitemap_scraper import scrape_docs_from_sitemap
 
-
 sys.path.append(
     os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 )
-
 from app.config.database import SessionLocal
 from app.entities.global_source import GlobalSource
-from rag_core.loaders.sitemap_scraper import scrape_docs_from_sitemap
 
 load_dotenv()
 
+broker_url = os.getenv("REDIS_URL", "redis://127.0.0.1:6379/0")
+
 celery_app = Celery(
     "ops_copilot_worker",
-    broker=os.getenv("RABBITMQ_URL", "amqp://guest:guest@localhost:5672//"),
+    broker=broker_url,
+    backend=broker_url,
 )
 
 

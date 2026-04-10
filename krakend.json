@@ -10,9 +10,9 @@
       "output_encoding": "json",
       "backend": [
         {
-          "url_pattern": "api/auth/login",
+          "url_pattern": "/api/auth/login",
           "method": "POST",
-          "host": ["http://host.docker.internal:8081"]
+          "host": ["http://127.0.0.1:8081"]
         }
       ]
     },
@@ -24,29 +24,63 @@
         {
           "url_pattern": "/api/v1/global/sources",
           "method": "GET",
-          "host": ["http://host.docker.internal:8000"]
+          "host": ["http://127.0.0.1:8000"]
         }
       ]
     },
     {
-      "endpoint": "/api/v1/knowledge/contribute",
+      "endpoint": "/api/v1/knowledge/contribute/file",
       "method": "POST",
       "output_encoding": "json",
       "extra_config": {
         "auth/validator": {
           "alg": "HS256",
-          "jwk_local_path": "/etc/krakend/jwk.json",
           "propagate_claims": [
             ["sub", "X-User-Id"],
             ["role", "X-User-Role"]
+          ],
+          "keys": [
+            {
+              "kty": "oct",
+              "alg": "HS256",
+              "k": "seal-hackathon-super-secret-key"
+            }
           ]
         }
       },
       "backend": [
         {
-          "url_pattern": "/api/v1/global/contribute",
+          "url_pattern": "/api/v1/global/contribute/file",
           "method": "POST",
-          "host": ["http://host.docker.internal:8000"]
+          "host": ["http://127.0.0.1:8000"]
+        }
+      ]
+    },
+    {
+      "endpoint": "/api/v1/knowledge/contribute/link",
+      "method": "POST",
+      "output_encoding": "json",
+      "extra_config": {
+        "auth/validator": {
+          "alg": "HS256",
+          "propagate_claims": [
+            ["sub", "X-User-Id"],
+            ["role", "X-User-Role"]
+          ],
+          "keys": [
+            {
+              "kty": "oct",
+              "alg": "HS256",
+              "k": "seal-hackathon-super-secret-key"
+            }
+          ]
+        }
+      },
+      "backend": [
+        {
+          "url_pattern": "/api/v1/global/contribute/link",
+          "method": "POST",
+          "host": ["http://127.0.0.1:8000"]
         }
       ]
     }

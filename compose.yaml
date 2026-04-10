@@ -2,6 +2,7 @@ services:
   api-gateway:
     image: devopsfaith/krakend:latest
     container_name: ops-krakend
+    network_mode: "host"
     ports:
       - "8080:8080"
     volumes:
@@ -11,13 +12,8 @@ services:
       - "host.docker.internal:host-gateway"
 
   message-broker:
-    image: rabbitmq:3-management
-    container_name: ops-rabbitmq
+    image: redis:7-alpine
+    container_name: ops-redis
+    command: redis-server --requirepass seal_super_secret
     ports:
-      - "5672:5672"
-      - "15672:15672"
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-
-volumes:
-  rabbitmq_data:
+      - "6380:6379"

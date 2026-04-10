@@ -4,7 +4,9 @@ import uuid
 from fastapi import UploadFile
 from sqlalchemy.orm import Session
 from app.repositories.global_source_repo import GlobalSourceRepository
-from app.worker.celery_worker import process_uploaded_file_task
+from app.dtos.global_source_dto import GlobalSourceCreateReq
+
+from app.worker.celery_worker import process_sitemap_task
 
 
 class GlobalSourceService:
@@ -27,7 +29,7 @@ class GlobalSourceService:
         s3_key = f"raw_uploads/{tech_name}/{unique_filename}"
         s3_uri = f"s3://{self.bucket_name}/{s3_key}"
 
-        # 2. Stream đẩy thẳng lên S3
+        # 2. Stream đẩy thẳng lên S3 (FastAPI gánh)
         self.s3_client.upload_fileobj(
             file.file,
             self.bucket_name,
@@ -44,15 +46,6 @@ class GlobalSourceService:
             source_type="FILE",
         )
 
-        # 4. Bắn tín hiệu cho Celery Worker làm việc nặng
-        process_uploaded_file_task.delay(
-            source_id=str(new_source.id),
-            s3_key=s3_key,
-            tech_name=tech_name,
-            file_extension=file_extension,
-        )
-
-        # 5. Trả về cho Client (202 Accepted từ controller)
         return new_source
 
     def contribute_link(self, db: Session, req: GlobalSourceCreateReq, user_id: str):
@@ -73,3 +66,4 @@ class GlobalSourceService:
         )
 
         return new_source
+
