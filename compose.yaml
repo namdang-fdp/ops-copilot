@@ -1,0 +1,23 @@
+services:
+  api-gateway:
+    image: devopsfaith/krakend:latest
+    container_name: ops-krakend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./krakend.json:/etc/krakend/krakend.json
+      - ./jwk.json:/etc/krakend/jwk.json
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  message-broker:
+    image: rabbitmq:3-management
+    container_name: ops-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+
+volumes:
+  rabbitmq_data:
