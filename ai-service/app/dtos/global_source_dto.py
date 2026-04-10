@@ -19,4 +19,3 @@ class GlobalSourceRes(BaseModel):
     last_synced_at: Optional[datetime]
 
     model_config = ConfigDict(from_attributes=True)
-

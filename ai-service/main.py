@@ -6,6 +6,7 @@ import uvicorn
 
 Base.metadata.create_all(bind=engine)
 
+# init scala (API docs)
 app = FastAPI(
     title="Ops Copilot - AI Service API",
     version="1.0.0",

@@ -9,9 +9,7 @@ router = APIRouter(prefix="/global", tags=["Global Knowledge Base"])
 service = GlobalSourceService()
 
 
-# ==========================================
-# CỔNG 1: NẠP FILE TRỰC TIẾP LÊN S3
-# ==========================================
+# Gửi file trực tiếp lên S3
 @router.post("/contribute/file", response_model=GlobalSourceRes, status_code=202)
 def contribute_file(
     tech_name: str = Form(..., description="Tên công nghệ (vd: aws, kubernetes)"),
@@ -31,9 +29,7 @@ def contribute_file(
     return service.contribute_file(db, file, tech_name, x_user_id)
 
 
-# ==========================================
-# CỔNG 2: NẠP LINK SITEMAP (Giao cho Celery đi cào)
-# ==========================================
+# Gửi link sitemap (tác vụ nặng) --> lưu redis queue --> dùng celery chạy langchain để crawl
 @router.post("/contribute/link", response_model=GlobalSourceRes, status_code=202)
 def contribute_link(
     req: GlobalSourceCreateReq,
@@ -44,6 +40,7 @@ def contribute_link(
     return service.contribute_link(db, req, x_user_id)
 
 
+# Lấy tất cả các sources đang có trong hệ thống
 @router.get("/sources", status_code=200)
 def get_sources(db: Session = Depends(get_db)):
     """API lấy danh sách data đã nạp để Frontend hiển thị Dashboard"""

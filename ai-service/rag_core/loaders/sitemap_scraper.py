@@ -8,8 +8,9 @@ def clean_html_content(html_content: str) -> str:
 
 
 def scrape_docs_from_sitemap(sitemap_url: str):
-    print(f"🕷️ Đang thả nhện đi cào sitemap: {sitemap_url}")
+    print(f"Đang thả nhện đi cào sitemap: {sitemap_url}")
 
+    # Update: Chỉ lọc những keyword sau, tránh cào hết sitemap
     loader = SitemapLoader(
         web_path=sitemap_url,
         filter_urls=[
@@ -21,11 +22,11 @@ def scrape_docs_from_sitemap(sitemap_url: str):
         header_template={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)..."},
     )
 
-    # Tốc độ cào (Requests per second) - Để 2-3 thôi kẻo bị nó block IP
+    # Tốc độ cào (Requests per second)
     loader.requests_per_second = 3
 
-    print("⏳ Bắt đầu kéo hàng, pha ly cà phê ngồi đợi nhé...")
+    print("Bắt đầu kéo hàng, pha ly cà phê ngồi đợi nhé...")
     docs = loader.load()
 
-    print(f"✅ Đã cào xong {len(docs)} bài viết xịn xò!")
+    print(f"Đã cào xong {len(docs)} bài viết xịn xò!")
     return docs

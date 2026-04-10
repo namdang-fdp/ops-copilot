@@ -9,6 +9,7 @@ from pgvector.sqlalchemy import Vector
 from app.config.database import Base
 
 
+# Table global sources
 class GlobalSource(Base):
     __tablename__ = "global_knowledge_sources"
 
@@ -27,6 +28,7 @@ class GlobalSource(Base):
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
 
 
+# Table DocumentChunk
 class DocumentChunk(Base):
     __tablename__ = "document_chunks"
 

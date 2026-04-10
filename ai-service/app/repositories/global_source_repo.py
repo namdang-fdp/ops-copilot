@@ -4,9 +4,6 @@ from app.entities.global_source import GlobalSource
 
 # query orm to get data from database
 class GlobalSourceRepository:
-    def get_all(self, db: Session):
-        return db.query(GlobalSource).order_by(GlobalSource.created_at.desc()).all()
-
     def create(
         self,
         db: Session,

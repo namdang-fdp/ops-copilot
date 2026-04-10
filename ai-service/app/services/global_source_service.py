@@ -10,6 +10,7 @@ from app.worker.celery_worker import process_sitemap_task
 
 
 class GlobalSourceService:
+    # constructor
     def __init__(self):
         self.repo = GlobalSourceRepository()
         self.s3_client = boto3.client(
@@ -20,6 +21,7 @@ class GlobalSourceService:
         )
         self.bucket_name = os.getenv("S3_BUCKET_NAME")
 
+    # Service gửi file lên s3 (fastapi)
     def contribute_file(
         self, db: Session, file: UploadFile, tech_name: str, user_id: str
     ):
@@ -29,7 +31,7 @@ class GlobalSourceService:
         s3_key = f"raw_uploads/{tech_name}/{unique_filename}"
         s3_uri = f"s3://{self.bucket_name}/{s3_key}"
 
-        # 2. Stream đẩy thẳng lên S3 (FastAPI gánh)
+        # 2. Stream đẩy thẳng lên S3
         self.s3_client.upload_fileobj(
             file.file,
             self.bucket_name,
@@ -58,7 +60,7 @@ class GlobalSourceService:
             source_type="SITEMAP",
         )
 
-        # 2. Xé bill ném cho Celery đi cào (Treo Queue)
+        # 2. Cho Celery đi cào (Treo Queue)
         process_sitemap_task.delay(
             source_id=str(new_source.id),
             tech_name=new_source.tech_name,
