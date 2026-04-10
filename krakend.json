@@ -3,6 +3,18 @@
   "port": 8080,
   "timeout": "3000ms",
   "cache_ttl": "300s",
+  "extra_config": {
+    "security/cors": {
+      "allow_origins": [
+        "http://localhost:3000",
+        "https://copilot.smartlive.vn"
+      ],
+      "allow_methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      "allow_headers": ["Origin", "Authorization", "Content-Type", "Accept"],
+      "expose_headers": ["Content-Length"],
+      "max_age": "12h"
+    }
+  },
   "endpoints": [
     {
       "endpoint": "/api/v1/auth/login",
@@ -19,11 +31,12 @@
     {
       "endpoint": "/api/v1/knowledge/global-sources",
       "method": "GET",
-      "output_encoding": "json",
+      "output_encoding": "no-op",
       "backend": [
         {
           "url_pattern": "/api/v1/global/sources",
           "method": "GET",
+          "encoding": "no-op",
           "host": ["http://127.0.0.1:8000"]
         }
       ]
@@ -31,10 +44,12 @@
     {
       "endpoint": "/api/v1/knowledge/contribute/file",
       "method": "POST",
-      "output_encoding": "json",
+      "output_encoding": "no-op",
       "extra_config": {
         "auth/validator": {
           "alg": "HS256",
+          "jwk_local_path": "/etc/krakend/jwk.json",
+          "disable_jwk_security": true,
           "propagate_claims": [
             ["sub", "X-User-Id"],
             ["role", "X-User-Role"]
@@ -59,10 +74,12 @@
     {
       "endpoint": "/api/v1/knowledge/contribute/link",
       "method": "POST",
-      "output_encoding": "json",
+      "output_encoding": "no-op",
       "extra_config": {
         "auth/validator": {
           "alg": "HS256",
+          "jwk_local_path": "/etc/krakend/jwk.json",
+          "disable_jwk_security": true,
           "propagate_claims": [
             ["sub", "X-User-Id"],
             ["role", "X-User-Role"]
